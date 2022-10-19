@@ -1,7 +1,7 @@
 package com.example.resilience4jplayground.controller;
 
 import com.example.resilience4jplayground.service.MedievalWeaponService;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+//import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
