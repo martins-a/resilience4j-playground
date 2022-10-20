@@ -1,0 +1,78 @@
+{
+	"info": {
+		"_postman_id": "5a86a3cb-838c-4812-bedd-7e2e8acb230d",
+		"name": "MATERIALS-SERVICE-RESILIENCE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12758065"
+	},
+	"item": [
+		{
+			"name": "[MB] CIRCUIT BREAKER BASIC",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"port\": 9998,\r\n  \"protocol\": \"http\",\r\n  \"recordRequests\": true,\r\n  \"stubs\": [\r\n    {\r\n      \"predicates\": [\r\n        {\r\n          \"equals\": {\r\n            \"method\": \"GET\",\r\n            \"path\": \"/api/materials\"\r\n          }\r\n        }\r\n      ],\r\n      \"responses\": [\r\n        {\r\n          \"is\": {\r\n            \"statusCode\": 200,\r\n            \"body\":  [\r\n\t\t\t\t\"Gold\",\r\n\t\t\t\t\"Wood\",\r\n\t\t\t\t\"Iron\",\r\n\t\t\t\t\"Amber\",\r\n\t\t\t\t\"Opal\",\r\n\t\t\t\t\"Sapphire\",\r\n\t\t\t\t\"Topaz\",\r\n\t\t\t\t\"Zinc\",\r\n\t\t\t\t\"Emerald\",\r\n\t\t\t\t\"Copper\"\r\n\t\t\t],\r\n\t\t\t\"headers\": {\r\n              \"Content-Type\": \"application/json\"\r\n            }\r\n          }\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      \"responses\": [\r\n        {\r\n          \"is\": { \"statusCode\": 404 }\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:2525/imposters",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2525",
+					"path": [
+						"imposters"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ACTUATOR CHECK",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9999/actuator/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"actuator",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[RQ] CIRCUIT BREAKER BASIC",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9999/api/weapons",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"api",
+						"weapons"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

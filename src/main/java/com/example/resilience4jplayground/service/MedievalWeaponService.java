@@ -12,43 +12,42 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MedievalWeaponService {
 
-    @Autowired
-    @Lazy
-    private RestTemplate restTemplate;
-
-    public final String WEAPON_SERVICE = "weaponService";
     private final WebClient webClient;
 
+    public List<String> getWeapons() {
 
+        List<String> availableMaterials = getAvailableMaterials();
+        return checkWeaponsAvailableToCraft(availableMaterials);
 
-    @CircuitBreaker(name=WEAPON_SERVICE, fallbackMethod = "getBasicWeapons")
-    public String getWeapons() {
+    }
 
-        Boolean availableMaterials = webClient.get()
+    public List<String> checkWeaponsAvailableToCraft(List<String> materials) {
+        return Arrays.asList("Wooden Sword", "Diamond Club", "Flame Sword");
+    }
+
+    public List<String> getAvailableMaterials() {
+        String[] availableMaterials = webClient.get()
                 .uri("http://localhost:9998/api/materials")
                 .retrieve()
-                .bodyToMono(Boolean.class).block();
+                .bodyToMono(String[].class).block();
 
-        //Boolean availableMaterials = getBasicWeapon1();
+        if ( availableMaterials == null ) {
+            throw new RuntimeException("Error to fetch materials");
+        }
 
-
-
-        return "These are the weapons";
+        return Arrays.asList(availableMaterials);
     }
 
 
-    public Boolean getBasicWeapon1() {
-        return restTemplate
-                .getForObject("http://localhost:9998/api/materials", Boolean.class);
-    }
 
-    public String getBasicWeapons(Exception e) {
-        return "this are the default weapons";
-    }
 
 
 
