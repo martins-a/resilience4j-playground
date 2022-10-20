@@ -5,6 +5,7 @@ import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class MedievalWeaponService {
 
     private final WebClient webClient;
@@ -25,6 +27,7 @@ public class MedievalWeaponService {
     public List<String> getWeapons() {
 
         List<String> availableMaterials = getAvailableMaterials();
+        log.info("availableMaterials: [{}]", availableMaterials);
         return checkWeaponsAvailableToCraft(availableMaterials);
 
     }

@@ -3,6 +3,7 @@ package com.example.resilience4jplayground.controller;
 import com.example.resilience4jplayground.service.MedievalWeaponService;
 //import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
@@ -31,7 +32,8 @@ public class MedievalWeaponController {
     private int attempt=1;
 
     @GetMapping
-    @CircuitBreaker(name=WEAPON_SERVICE, fallbackMethod = "getBasicWeapons")
+    //@CircuitBreaker(name=WEAPON_SERVICE, fallbackMethod = "getBasicWeapons")
+    @Retry(name=WEAPON_SERVICE)
     @ResponseStatus(HttpStatus.OK)
     public List<String> getWeapons() {
         log.info("retry method called "+attempt++ +" times "+" at "+new Date());
