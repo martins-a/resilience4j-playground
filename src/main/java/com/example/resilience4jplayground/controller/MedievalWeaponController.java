@@ -2,6 +2,7 @@ package com.example.resilience4jplayground.controller;
 
 import com.example.resilience4jplayground.service.MedievalWeaponService;
 //import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
@@ -9,10 +10,7 @@ import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -38,6 +36,11 @@ public class MedievalWeaponController {
     public List<String> getWeapons() {
         log.info("retry method called "+attempt++ +" times "+" at "+new Date());
         return medievalWeaponService.getWeapons();
+    }
+
+    @PostMapping("/postOrder")
+    public void postWeaponOrder() throws InterruptedException {
+        medievalWeaponService.sendCraftOrder();
     }
 
     public List<String> getBasicWeapons(Exception e) {

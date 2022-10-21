@@ -11,7 +11,26 @@ management:
     health:
       show-details: always
 
-resilience4j:
+resilience4j.bulkhead:
+  instances:
+    weaponService:
+      maxWaitDuration: 100ms
+      maxConcurrentCalls: 1
+
+resilience4j.thread-pool-bulkhead:
+  instances:
+    weaponService:
+      maxThreadPoolSize: 1
+      coreThreadPoolSize: 1
+      queueCapacity: 1
+
+#resilience4j:
+#  bulkhead:
+#    weaponService:
+#      maxWaitDuration: 100ms
+#      maxConcurrentCalls: 1
+
+#resilience4j:
 #  circuitbreaker:
 #    instances:
 #      weaponService:
@@ -26,8 +45,10 @@ resilience4j:
 #        slidingWindowType: COUNT_BASED
 #        recordExceptions:
 #          - org.springframework.web.reactive.function.client.WebClientRequestException
-  retry:
-    instances:
-      weaponService:
-        maxRetryAttempts: 3
-        waitDuration: 5s
+#  retry:
+#    instances:
+#      weaponService:
+#        maxRetryAttempts: 3
+#        waitDuration: 5s
+
+

@@ -1,6 +1,7 @@
 package com.example.resilience4jplayground.service;
 
 //import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -9,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -22,6 +24,8 @@ import java.util.List;
 @Log4j2
 public class MedievalWeaponService {
 
+    public final String WEAPON_SERVICE = "weaponService";
+
     private final WebClient webClient;
 
     public List<String> getWeapons() {
@@ -30,6 +34,15 @@ public class MedievalWeaponService {
         log.info("availableMaterials: [{}]", availableMaterials);
         return checkWeaponsAvailableToCraft(availableMaterials);
 
+    }
+
+    @Bulkhead(name = WEAPON_SERVICE, fallbackMethod = "bulkHeadFallback")
+    public void sendCraftOrder() throws InterruptedException {
+        webClient.post()
+                .uri("http://localhost:9997/api/craft")
+                .retrieve()
+                .bodyToMono(String[].class).block();
+        log.info("Sent craft order");
     }
 
     public List<String> checkWeaponsAvailableToCraft(List<String> materials) {
@@ -47,6 +60,10 @@ public class MedievalWeaponService {
         }
 
         return Arrays.asList(availableMaterials);
+    }
+
+    public void bulkHeadFallback(Throwable t) {
+        log.error("Inside bulkHeadFallback, cause - {}", t.toString());
     }
 
 
