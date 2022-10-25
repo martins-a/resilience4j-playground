@@ -48,5 +48,10 @@ public class MedievalWeaponController {
     }
 
 
+    @PostMapping("/postOrder/batch")
+    public void postWeaponOrderInBatch() {
+        medievalWeaponService.sendCraftOrderInBatch();
+    }
+
 
 }

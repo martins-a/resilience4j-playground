@@ -11,18 +11,18 @@ management:
     health:
       show-details: always
 
-resilience4j.bulkhead:
-  instances:
-    weaponService:
-      maxWaitDuration: 100ms
-      maxConcurrentCalls: 1
-
-resilience4j.thread-pool-bulkhead:
-  instances:
-    weaponService:
-      maxThreadPoolSize: 1
-      coreThreadPoolSize: 1
-      queueCapacity: 1
+#resilience4j.bulkhead:
+#  instances:
+#    weaponService:
+#      maxWaitDuration: 100ms
+#      maxConcurrentCalls: 1
+#
+#resilience4j.thread-pool-bulkhead:
+#  instances:
+#    weaponService:
+#      maxThreadPoolSize: 1
+#      coreThreadPoolSize: 1
+#      queueCapacity: 1
 
 #resilience4j:
 #  bulkhead:
@@ -51,4 +51,10 @@ resilience4j.thread-pool-bulkhead:
 #        maxRetryAttempts: 3
 #        waitDuration: 5s
 
-
+resilience4j:
+  ratelimiter:
+    instances:
+      weaponService:
+        limitForPeriod: 2
+        limitRefreshPeriod: 4s
+        timeoutDuration: 1s

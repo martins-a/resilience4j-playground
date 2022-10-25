@@ -5,6 +5,7 @@ import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,15 @@ public class MedievalWeaponService {
                 .retrieve()
                 .bodyToMono(String[].class).block();
         log.info("Sent craft order");
+    }
+
+    @RateLimiter(name = WEAPON_SERVICE)
+    public void sendCraftOrderInBatch() {
+        webClient.post()
+                .uri("http://localhost:9997/api/craft/batch")
+                .retrieve()
+                .bodyToMono(String[].class).block();
+        log.info("Sent craft order in batch");
     }
 
     public List<String> checkWeaponsAvailableToCraft(List<String> materials) {
