@@ -129,6 +129,56 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "[MB] RATE LIMITER BASIC",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"port\": 9997,\r\n  \"protocol\": \"http\",\r\n  \"recordRequests\": true,\r\n  \"stubs\": [\r\n    {\r\n      \"predicates\": [\r\n        {\r\n          \"equals\": {\r\n            \"method\": \"POST\",\r\n            \"path\": \"/api/craft/batch\"\r\n          }\r\n        }\r\n      ],\r\n      \"responses\": [\r\n        {\r\n\t\t  \"is\": {\r\n            \"statusCode\": 200\r\n          },\r\n          \"behaviors\": [{\r\n                \"wait\": 200\r\n           }]\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      \"responses\": [\r\n        {\r\n          \"is\": { \"statusCode\": 404 }\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:2525/imposters",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2525",
+					"path": [
+						"imposters"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[RQ] Send batch order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9999/api/weapons/postOrder/batch",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9999",
+					"path": [
+						"api",
+						"weapons",
+						"postOrder",
+						"batch"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
