@@ -35,6 +35,34 @@
 			"response": []
 		},
 		{
+			"name": "[MB] CIRCUIT BREAKER SLOW",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"port\": 9998,\r\n  \"protocol\": \"http\",\r\n  \"recordRequests\": true,\r\n  \"stubs\": [\r\n    {\r\n      \"predicates\": [\r\n        {\r\n          \"equals\": {\r\n            \"method\": \"GET\",\r\n            \"path\": \"/api/materials\"\r\n          }\r\n        }\r\n      ],\r\n      \"responses\": [\r\n        {\r\n          \"is\": {\r\n            \"statusCode\": 200,\r\n            \"body\":  [\r\n\t\t\t\t\"Gold\",\r\n\t\t\t\t\"Wood\",\r\n\t\t\t\t\"Iron\",\r\n\t\t\t\t\"Amber\",\r\n\t\t\t\t\"Opal\",\r\n\t\t\t\t\"Sapphire\",\r\n\t\t\t\t\"Topaz\",\r\n\t\t\t\t\"Zinc\",\r\n\t\t\t\t\"Emerald\",\r\n\t\t\t\t\"Copper\"\r\n\t\t\t],\r\n\t\t\t\"headers\": {\r\n              \"Content-Type\": \"application/json\"\r\n            }\r\n          },\r\n                   \"behaviors\": [{\r\n                \"wait\": 2000\r\n            }]\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      \"responses\": [\r\n        {\r\n          \"is\": { \"statusCode\": 404 }\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:2525/imposters",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2525",
+					"path": [
+						"imposters"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "[MB] RETRY BASIC",
 			"request": {
 				"method": "POST",
@@ -83,7 +111,7 @@
 			"response": []
 		},
 		{
-			"name": "[RQ] CIRCUIT BREAKER BASIC",
+			"name": "[RQ] CIRCUIT BREAKER AND RETRY BASIC",
 			"request": {
 				"method": "GET",
 				"header": [],

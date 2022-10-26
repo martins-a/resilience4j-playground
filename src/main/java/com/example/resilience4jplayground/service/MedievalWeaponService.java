@@ -37,7 +37,7 @@ public class MedievalWeaponService {
 
     }
 
-    @Bulkhead(name = WEAPON_SERVICE, fallbackMethod = "bulkHeadFallback")
+    //@Bulkhead(name = WEAPON_SERVICE, fallbackMethod = "bulkHeadFallback")
     public void sendCraftOrder() throws InterruptedException {
         webClient.post()
                 .uri("http://localhost:9997/api/craft")
@@ -75,10 +75,6 @@ public class MedievalWeaponService {
     public void bulkHeadFallback(Throwable t) {
         log.error("Inside bulkHeadFallback, cause - {}", t.toString());
     }
-
-
-
-
 
 
 

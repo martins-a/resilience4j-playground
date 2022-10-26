@@ -6,11 +6,54 @@ management:
   endpoints:
     web:
       exposure:
-        include: health
+        include: health,metrics,info
   endpoint:
     health:
       show-details: always
 
+
+# CIRCUIT BREAKER EXAMPLE 1
+#resilience4j:
+#  circuitbreaker:
+#    instances:
+#      weaponService:
+#        registerHealthIndicator: true
+#        eventConsumerBufferSize: 10
+#        failureRateThreshold: 50
+#        minimumNumberOfCalls: 5
+#        automaticTransitionFromOpenToHalfOpenEnabled: true
+#        waitDurationInOpenState: 20s
+#        permittedNumberOfCallsInHalfOpenState: 3
+#        slidingWindowSize: 5
+#        slidingWindowType: COUNT_BASED
+#        recordExceptions:
+#          - org.springframework.web.reactive.function.client.WebClientRequestException
+
+# CIRCUIT BREAKER EXAMPLE 2
+#resilience4j:
+#  circuitbreaker:
+#    instances:
+#      weaponService:
+#        registerHealthIndicator: true
+#        eventConsumerBufferSize: 10
+#        slowCallRateThreshold: 50
+#        minimumNumberOfCalls: 5
+#        automaticTransitionFromOpenToHalfOpenEnabled: true
+#        waitDurationInOpenState: 20s
+#        permittedNumberOfCallsInHalfOpenState: 3
+#        slidingWindowSize: 60
+#        slidingWindowType: TIME_BASED
+#        slowCallDurationThreshold: 1s
+
+# RETRY EXAMPLE
+#resilience4j:
+#  retry:
+#    instances:
+#      weaponService:
+#        maxRetryAttempts: 3
+#        waitDuration: 5s
+
+# BULKHEAD EXAMPLE
 #resilience4j.bulkhead:
 #  instances:
 #    weaponService:
@@ -25,36 +68,9 @@ management:
 #      queueCapacity: 1
 
 #resilience4j:
-#  bulkhead:
-#    weaponService:
-#      maxWaitDuration: 100ms
-#      maxConcurrentCalls: 1
-
-#resilience4j:
-#  circuitbreaker:
+#  ratelimiter:
 #    instances:
 #      weaponService:
-#        registerHealthIndicator: true
-#        eventConsumerBufferSize: 10
-#        failureRateThreshold: 50
-#        minimumNumberOfCalls: 10
-#        automaticTransitionFromOpenToHalfOpenEnabled: true
-#        waitDurationInOpenState: 30s
-#        permittedNumberOfCallsInHalfOpenState: 3
-#        slidingWindowSize: 10
-#        slidingWindowType: COUNT_BASED
-#        recordExceptions:
-#          - org.springframework.web.reactive.function.client.WebClientRequestException
-#  retry:
-#    instances:
-#      weaponService:
-#        maxRetryAttempts: 3
-#        waitDuration: 5s
-
-resilience4j:
-  ratelimiter:
-    instances:
-      weaponService:
-        limitForPeriod: 2
-        limitRefreshPeriod: 4s
-        timeoutDuration: 1s
+#        limitForPeriod: 2
+#        limitRefreshPeriod: 4s
+#        timeoutDuration: 1s
